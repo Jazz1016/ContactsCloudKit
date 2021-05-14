@@ -8,18 +8,39 @@
 import UIKit
 
 class ContactsListTableViewController: UITableViewController {
-
+    
+    // MARK: - Outlets
+    @IBOutlet weak var contactsSearchBar: UISearchBar!
+    
     // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        contactsSearchBar.delegate = self
         fetchAllContacts()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         fetchAllContacts()
-        
+        resultsArr = ContactController.shared.contacts
         tableView.reloadData()
+    }
+    
+    // MARK: - Properties
+    var resultsArr: [SearchableRecord] = []
+    var isSearching: Bool = false
+    var dataSource: [SearchableRecord] {
+        
+        
+        
+        if isSearching {
+            return resultsArr
+        } else {
+            
+            fetchAllContacts()
+            
+            return ContactController.shared.contacts
+        }
     }
     
     // MARK: - Functions
@@ -40,26 +61,42 @@ class ContactsListTableViewController: UITableViewController {
 
     // MARK: - Table view data source
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return ContactController.shared.contacts.count
+        return dataSource.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "contactCell", for: indexPath)
         
-        let contact = ContactController.shared.contacts[indexPath.row]
+        let contact = dataSource[indexPath.row] as? Contact
         
-        cell.textLabel?.text = contact.name
-        cell.detailTextLabel?.text = contact.phone
+        cell.textLabel?.text = contact?.name
+        cell.detailTextLabel?.text = contact?.phone
 
         return cell
     }
     
-    // Override to support editing the table view.
+//     Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
+            let contactToDelete = dataSource[indexPath.row] as? Contact
+
+            guard let index = ContactController.shared.contacts.firstIndex(of: contactToDelete!) else {return}
+
+
+            ContactController.shared.deleteContact(contact: contactToDelete!) { result in
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let string):
+                        ContactController.shared.contacts.remove(at: index)
+
+                        tableView.deleteRows(at: [indexPath], with: .fade)
+                        print(string)
+                    case .failure(_):
+                        print("error deleting contact")
+                    }
+                }
+            }
         }
     }
     
@@ -72,10 +109,41 @@ class ContactsListTableViewController: UITableViewController {
             if let index = tableView.indexPathForSelectedRow {
                 guard let destination = segue.destination as? ContactsDetailViewController else {return}
                 
-                let contact = ContactController.shared.contacts[index.row]
+                
+                
+                let contact = dataSource[index.row] as? Contact
                 
                 destination.contact = contact
             }
         }
     }
 }//End of class
+
+// MARK: - Extensions
+
+extension ContactsListTableViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        resultsArr = ContactController.shared.contacts.filter(({ $0.matches(searchTerm: searchText.lowercased()) }))
+        tableView.reloadData()
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        resultsArr = ContactController.shared.contacts
+        tableView.reloadData()
+        searchBar.text = ""
+        searchBar.resignFirstResponder()
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        isSearching = true
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        isSearching = false
+    }
+    
+}

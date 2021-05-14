@@ -46,7 +46,6 @@ class ContactsDetailViewController: UIViewController {
             contact.phone = phone
             contact.email = email
             ContactController.shared.editContact(contact: contact) { result in
-                
                 DispatchQueue.main.async {
                     switch result {
                     case .success(let contact):

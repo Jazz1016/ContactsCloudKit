@@ -19,6 +19,7 @@
 		0D1821B9264ED1340079D417 /* ContactError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D1821B8264ED1340079D417 /* ContactError.swift */; };
 		0D1821BB264EDA510079D417 /* ContactsDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D1821BA264EDA510079D417 /* ContactsDetailViewController.swift */; };
 		0D1821BD264EDA6F0079D417 /* ContactsListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D1821BC264EDA6F0079D417 /* ContactsListTableViewController.swift */; };
+		0D1821BF264EF2EC0079D417 /* SearchableRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D1821BE264EF2EC0079D417 /* SearchableRecord.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +38,7 @@
 		0D1821B8264ED1340079D417 /* ContactError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactError.swift; sourceTree = "<group>"; };
 		0D1821BA264EDA510079D417 /* ContactsDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsDetailViewController.swift; sourceTree = "<group>"; };
 		0D1821BC264EDA6F0079D417 /* ContactsListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsListTableViewController.swift; sourceTree = "<group>"; };
+		0D1821BE264EF2EC0079D417 /* SearchableRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchableRecord.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,6 +158,7 @@
 			isa = PBXGroup;
 			children = (
 				0D1821B2264ECBC80079D417 /* Contact.swift */,
+				0D1821BE264EF2EC0079D417 /* SearchableRecord.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -240,6 +243,7 @@
 			files = (
 				0D1821B3264ECBC80079D417 /* Contact.swift in Sources */,
 				0D1821B9264ED1340079D417 /* ContactError.swift in Sources */,
+				0D1821BF264EF2EC0079D417 /* SearchableRecord.swift in Sources */,
 				0D1821BD264EDA6F0079D417 /* ContactsListTableViewController.swift in Sources */,
 				0D1821B7264ED0190079D417 /* ContactController.swift in Sources */,
 				0D1821BB264EDA510079D417 /* ContactsDetailViewController.swift in Sources */,

@@ -61,3 +61,12 @@ extension Contact: Equatable {
     }
     
 }
+
+extension Contact: SearchableRecord {
+    func matches(searchTerm: String) -> Bool {
+        if name.lowercased().contains(searchTerm){
+            return true
+        }
+        return false
+    }
+}

@@ -120,7 +120,7 @@ class ContactController {
         privateDB.add(deleteOperation)
     }
     
-    // MARK: - Persistence
+//     MARK: - Persistence
 //    func createPersistentStore() -> URL {
 //        let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
 //        let fileURL = url[0].appendingPathComponent("ContactsCloudKit.json")
@@ -144,5 +144,4 @@ class ContactController {
 //            print("ERROR LOADING SONGS")
 //        }
 //    }
-//}
 }
