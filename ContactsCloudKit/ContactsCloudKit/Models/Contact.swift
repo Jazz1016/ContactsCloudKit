@@ -9,15 +9,15 @@ import Foundation
 import CloudKit
 import UIKit
 
-class Contact {
+class Contact: Codable {
     
     var name: String
     var phone: String?
     var email: String?
-    var recordID: CKRecord.ID
+    var recordID: String
     
     
-    init(name: String, phone: String? = "", email: String? = "", recordID: CKRecord.ID = CKRecord.ID(recordName: UUID().uuidString)){
+    init(name: String, phone: String? = "", email: String? = "", recordID: String = UUID().uuidString){
         self.name = name
         self.phone = phone
         self.email = email
@@ -33,15 +33,16 @@ extension Contact {
               let phone = ckRecord[ContactStrings.phoneKey] as? String,
               let email = ckRecord[ContactStrings.emailKey] as? String else {return nil}
         
+        let recordID = "\(ckRecord.recordID)"
         
-        self.init(name: name, phone: phone, email: email, recordID: ckRecord.recordID)
+        self.init(name: name, phone: phone, email: email, recordID: recordID)
     }
 }
 
 extension CKRecord {
     convenience init(contact: Contact) {
         
-        self.init(recordType: ContactStrings.recordTypeKey, recordID: contact.recordID)
+        self.init(recordType: ContactStrings.recordTypeKey, recordID: CKRecord.ID(recordName: contact.recordID))
         
         self.setValuesForKeys([
         

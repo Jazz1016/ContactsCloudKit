@@ -99,7 +99,10 @@ class ContactController {
     
     func deleteContact (contact: Contact, completion: @escaping (Result<String, ContactError>) -> Void){
         
-        let deleteOperation = CKModifyRecordsOperation(recordsToSave: nil, recordIDsToDelete: [contact.recordID])
+        let recordID = CKRecord.ID(recordName: contact.recordID)
+        
+        
+        let deleteOperation = CKModifyRecordsOperation(recordsToSave: nil, recordIDsToDelete: [recordID])
         
         deleteOperation.savePolicy = .changedKeys
         
@@ -121,27 +124,27 @@ class ContactController {
     }
     
 //     MARK: - Persistence
-//    func createPersistentStore() -> URL {
-//        let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-//        let fileURL = url[0].appendingPathComponent("ContactsCloudKit.json")
-//        return fileURL
-//    }
-//
-//    func saveToPersistentStore() {
-//        do {
-//            let data = try JSONEncoder().encode(contacts)
-//            try data.write(to: createPersistentStore())
-//        } catch {
-//            print("ERROR ENCODING SONGS")
-//        }
-//    }
-//
-//    func loadFromPersistentStore() {
-//        do {
-//            let data = try Data(contentsOf: createPersistentStore())
-//            contacts = try JSONDecoder().decode([Contact].self, from: data)
-//        } catch {
-//            print("ERROR LOADING SONGS")
-//        }
-//    }
+    func createPersistentStore() -> URL {
+        let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let fileURL = url[0].appendingPathComponent("ContactsCloudKit.json")
+        return fileURL
+    }
+
+    func saveToPersistentStore() {
+        do {
+            let data = try JSONEncoder().encode(contacts)
+            try data.write(to: createPersistentStore())
+        } catch {
+            print("ERROR ENCODING SONGS")
+        }
+    }
+
+    func loadFromPersistentStore() {
+        do {
+            let data = try Data(contentsOf: createPersistentStore())
+            contacts = try JSONDecoder().decode([Contact].self, from: data)
+        } catch {
+            print("ERROR LOADING SONGS")
+        }
+    }
 }
