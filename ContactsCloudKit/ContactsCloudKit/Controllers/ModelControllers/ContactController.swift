@@ -33,6 +33,7 @@ class ContactController {
             guard let savedContact = Contact(ckRecord: record) else {return completion(.failure(.couldNotUnwrap))}
             
             self.contacts.insert(savedContact, at: 0)
+            self.saveToPersistentStore()
             
             completion(.success("Contact successfully created"))
         }
@@ -90,7 +91,7 @@ class ContactController {
             guard let updatedContact = Contact(ckRecord: record) else {return completion(.failure(.couldNotUnwrap))}
             
             
-            
+            self.saveToPersistentStore()
             
             completion(.success(updatedContact))
         }
@@ -99,7 +100,10 @@ class ContactController {
     
     func deleteContact (contact: Contact, completion: @escaping (Result<String, ContactError>) -> Void){
         
+        
+        
         let recordID = CKRecord.ID(recordName: contact.recordID)
+        
         
         
         let deleteOperation = CKModifyRecordsOperation(recordsToSave: nil, recordIDsToDelete: [recordID])

@@ -16,12 +16,12 @@ class ContactsListTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         contactsSearchBar.delegate = self
+        ContactController.shared.loadFromPersistentStore()
         fetchAllContacts()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        fetchAllContacts()
         resultsArr = ContactController.shared.contacts
         tableView.reloadData()
     }
@@ -36,8 +36,6 @@ class ContactsListTableViewController: UITableViewController {
         if isSearching {
             return resultsArr
         } else {
-            
-            fetchAllContacts()
             
             return ContactController.shared.contacts
         }
@@ -89,7 +87,9 @@ class ContactsListTableViewController: UITableViewController {
                     switch result {
                     case .success(let string):
                         ContactController.shared.contacts.remove(at: index)
-
+                        ContactController.shared.saveToPersistentStore()
+                        
+                        
                         tableView.deleteRows(at: [indexPath], with: .fade)
                         print(string)
                     case .failure(_):
@@ -143,6 +143,8 @@ extension ContactsListTableViewController: UISearchBarDelegate {
     }
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        ContactController.shared.loadFromPersistentStore()
+        fetchAllContacts()
         isSearching = false
     }
     
